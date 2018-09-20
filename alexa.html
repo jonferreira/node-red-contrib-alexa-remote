@@ -1,0 +1,139 @@
+<!-- CREDENTIALS -->
+
+<script type="text/x-red" data-template-name="Alexa-credentials">
+	<div class="form-row">
+        <label for="node-config-input-email"><i class="fa fa-user"></i> Email</label>
+        <input type="text" id="node-config-input-email">
+    </div>
+	<div class="form-row">
+        <label for="node-config-input-password"><i class="fa fa-user"></i> Password</label>
+        <input type="password" id="node-config-input-password">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-alexaServiceHost"><i class="fa fa-globe"></i> Service Host</label>
+        <input type="text" id="node-config-input-alexaServiceHost">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-acceptLanguage"><i class="fa fa-globe"></i> Language</label>
+        <input type="text" id="node-config-input-acceptLanguage">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-amazonPage"><i class="fa fa-globe"></i> Amazon Page</label>
+        <input type="text" id="node-config-input-amazonPage">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-cookie"><i class="fa fa-globe"></i> Cookie</label>
+        <textarea rows="4" cols="60" id="node-config-input-cookie"></textarea>
+    </div>
+    
+</script>
+
+<script type="text/javascript">
+    RED.nodes.registerType('Alexa-credentials',{
+        category: 'config',
+        defaults: {
+            email:     { value:"" },
+            password:     { value:"" },
+            alexaServiceHost:     { value:"pitangui.amazon.com", required: true },
+            acceptLanguage:  { value:"en-UK", required: true },
+            amazonPage:  { value:"amazon.com", required: true },
+            cookie:  { value:"", required: true },
+        },
+        label: function() {
+            return this.email+" - "+this.amazonPage || "";
+        }
+    });
+
+	
+    RED.nodes.registerType('Alexa-speak',{
+        category: 'media',
+        color:    '#E9967A',
+		paletteLabel: "Amazon Speak",
+        defaults: {
+            serialOrName:  { value:"" },
+            text:  { value:"" },
+            account:  { type:"Alexa-credentials", required:true }
+        },
+        inputs:  1,
+        outputs: 1,
+        icon: "white-globe.png",
+        label: function() {
+            return this.server.serialOrName || "Alexa Speak";
+		}
+    });
+</script>
+
+<script type="text/x-red" data-template-name="Alexa-speak">
+    <div class="form-row">
+        <label for="node-input-account"><i class="fa fa-globe"></i> Account</label>
+        <input type="text" id="node-input-account">
+    </div>
+	
+	<div class="form-row">
+        <label for="node-input-serialOrName"><i class="fa fa-globe"></i> Serial or Name</label>
+        <input type="text" id="node-input-serialOrName">
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-text"><i class="icon-tag"></i> Text</label>
+        <input type="text" id="node-input-text">
+    </div>
+
+
+</script>
+
+<script type="text/x-red" data-help-name="SFTP-main">
+<p>An SFTP client for node-red, a wrapper for <a href="https://github.com/jyu213/ssh2-sftp-client">ssh2-sftp-client</a></p>
+<p>Each variable can be overriden with msg.xxx</p>
+<h3><a id="user-content-list" class="anchor" href="https://github.com/jyu213/ssh2-sftp-client#list" aria-hidden="true"></a>List</h3>
+<p>Retrieves a directory listing.</p>
+<pre><code>sftp.list(remoteFilePath)
+</code></pre>
+<p>directory info:</p>
+<pre><code>type: // file type(-, d, l)
+name: // file name
+size: // file size
+modifyTime: // file timestamp of modified time
+accessTime: // file timestamp of access time
+rights: {
+    user:
+    group:
+    other:
+},
+owner: // user ID
+group: // group ID
+</code></pre>
+<h3><a id="user-content-get" class="anchor" href="https://github.com/jyu213/ssh2-sftp-client#get" aria-hidden="true"></a>Get</h3>
+<p>get a new readable stream for path. The encoding is passed to Node Stream (<a href="https://nodejs.org/api/stream.html" rel="nofollow">https://nodejs.org/api/stream.html</a>) and it controls how the content is encoded. For example, when downloading binary data, 'null' should be passed (check node stream documentation). Defaults to 'utf8'.</p>
+<pre><code>sftp.get(remoteFilePath, [useCompression], [encoding], [addtionalOptions]);
+</code></pre>
+<h3><a id="user-content-put" class="anchor" href="https://github.com/jyu213/ssh2-sftp-client#put" aria-hidden="true"></a>Put</h3>
+<p>upload a file. it can be <code>localPath</code> or <code>Buffer</code> or <code>Stream</code>.</p>
+<pre><code>sftp.put(localFilePath, remoteFilePath, [useCompression], [encoding], [addtionalOptions]);
+sftp.put(Buffer, remoteFilePath, [useCompression], [encoding], [addtionalOptions]);
+sftp.put(Stream, remoteFilePath, [useCompression], [encoding], [addtionalOptions]);
+</code></pre>
+<h3><a id="user-content-mkdir" class="anchor" href="https://github.com/jyu213/ssh2-sftp-client#mkdir" aria-hidden="true"></a>Mkdir</h3>
+<p>create a new directory.</p>
+<pre><code>// recursive default is false, if true, it will create directory recursive
+sftp.mkdir(remoteFilePath, recursive);
+</code></pre>
+<h3><a id="user-content-rmdir" class="anchor" href="https://github.com/jyu213/ssh2-sftp-client#rmdir" aria-hidden="true"></a>Rmdir</h3>
+<p>remove the directory or file.</p>
+<pre><code>// recursive default is false, if true, it will remove directory recursive even if is not empty
+sftp.rmdir(localPath, recursive);
+</code></pre>
+<h3><a id="user-content-delete" class="anchor" href="https://github.com/jyu213/ssh2-sftp-client#delete" aria-hidden="true"></a>Delete</h3>
+<p>delete file.</p>
+<pre><code>sftp.delete(remoteFilePath);
+</code></pre>
+<h3><a id="user-content-rename" class="anchor" href="https://github.com/jyu213/ssh2-sftp-client#rename" aria-hidden="true"></a>Rename</h3>
+<p>rename remoteSourcePath to remoteDestPath (removes remoteSourcePath).</p>
+<pre><code>sftp.rename(remoteSourcePath, remoteDestPath);
+</code></pre>
+<h3><a id="user-content-chmod" class="anchor" href="https://github.com/jyu213/ssh2-sftp-client#chmod" aria-hidden="true"></a>Chmod</h3>
+<p>modify rights to remoteDestPath file</p>
+<pre><code>sftp.chmod(remoteDestPath, mode);
+</code></pre>
+
+</script>
