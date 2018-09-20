@@ -1,0 +1,62 @@
+<script type="text/x-red" data-template-name="Alexa-music">
+    <div class="form-row">
+        <label for="node-input-account"><i class="fa fa-globe"></i> Account</label>
+        <input type="text" id="node-input-account">
+    </div>
+	
+	<div class="form-row">
+        <label for="node-input-serialOrName"><i class="fa fa-globe"></i> Serial or Name</label>
+        <input type="text" id="node-input-serialOrName">
+    </div>
+	
+	<div class="form-row">
+        <label for="node-input-name"><i class="fa fa-globe"></i> Node Name</label>
+        <input type="text" id="node-input-name">
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-providerId"><i class="icon-tag"></i> Music Provider ID</label>
+        <input type="text" id="node-input-providerId">
+    </div>
+    <div class="form-row">
+        <label for="node-input-searchPhrase"><i class="icon-tag"></i> Search Phrase</label>
+        <input type="text" id="node-input-searchPhrase">
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-volume"><i class="icon-tag"></i> Volume</label>
+        <input type="number" id="node-input-volume">
+    </div>
+
+
+</script>
+
+<script type="text/x-red" data-help-name="Alexa-music">
+<p>An Alexa Remote client for node-red, a wrapper for <a href="https://github.com/Apollon77/alexa-remote">Alexa-remote</a></p>
+<p>Each variable can be overriden with msg.xxx</p>
+<p>More to come later</p>
+
+</script>
+
+<script type="text/javascript">
+	
+    RED.nodes.registerType('Alexa-music',{
+        category: 'media',
+        color:    '#3FADB5',
+        label: function() {
+            return this.name || "Alexa Music";
+        },
+		paletteLabel: "Alexa Music",
+        defaults: {
+            name: {value:""},
+            serialOrName:  { value:"" },
+            volume:  { value:"" },
+            providerId:  { value:"SPOTIFY" },
+            searchPhrase: {value:""},
+            account:  { type:"Alexa-credentials", required:true }
+        },
+        inputs:  1,
+        outputs: 1,
+        icon: "alexa.png"
+    });
+</script>

@@ -1,1 +1,1 @@
-# node-red-contrib-alexa-local
+# node-red-contrib-alexa-remote

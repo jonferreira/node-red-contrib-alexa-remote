@@ -1,0 +1,87 @@
+<script type="text/x-red" data-template-name="Alexa-command">
+    <div class="form-row">
+        <label for="node-input-account"><i class="fa fa-globe"></i> Account</label>
+        <input type="text" id="node-input-account">
+    </div>
+	
+	<div class="form-row">
+        <label for="node-input-serialOrName"><i class="fa fa-globe"></i> Serial or Name</label>
+        <input type="text" id="node-input-serialOrName">
+    </div>
+	
+	<div class="form-row">
+        <label for="node-input-name"><i class="fa fa-globe"></i> Node Name</label>
+        <input type="text" id="node-input-name">
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-command"><i class="icon-tag"></i> Command</label>
+        <select id="node-input-command" >
+            <option value='play'>Play</option>
+            <option value='pause'>Pause</option>
+            <option value='next'>Next</option>
+            <option value='previous'>Previous</option>
+            <option value='forward'>Forward</option>
+            <option value='rewind'>Rewind</option>
+            <option value='volume'>Volume</option>
+            <option value='shuffle'>Shuffle</option>
+            <option value='repeat'>Repeat</option>
+        </select>
+    </div>
+    
+    <div class="form-row">
+        <label for="node-input-action"><i class="icon-tag"></i> Action</label>
+        <input type="boolean" id="node-input-action">
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-volume"><i class="icon-tag"></i> Volume</label>
+        <input type="number" id="node-input-volume">
+    </div>
+
+
+</script>
+
+<script type="text/x-red" data-help-name="Alexa-command">
+<p>An Alexa Remote client for node-red, a wrapper for <a href="https://github.com/Apollon77/alexa-remote">Alexa-remote</a></p>
+<p>Each variable can be overriden with msg.xxx</p>
+<p>More to come later</p>
+
+</script>
+
+<script type="text/javascript">
+	
+    RED.nodes.registerType('Alexa-command',{
+        category: 'media',
+        color:    '#3FADB5',
+        label: function() {
+            return this.name || "Alexa Command";
+        },
+		paletteLabel: "Alexa Command",
+        defaults: {
+            name: {value:""},
+            serialOrName:  { value:"" },
+            volume:  { value:"" },
+            command:  { value:"" },
+            action: {value:""},
+            account:  { type:"Alexa-credentials", required:true }
+        },
+        inputs:  1,
+        outputs: 1,
+        icon: "alexa.png",
+        oneditprepare: function() {
+			$("#node-input-command").change(function() {
+                if ($("#node-input-command").val() === "shuffle" || $("#node-input-command").val() === "repeat") {
+                    $("#node-input-action").parent().show();
+                    $("#node-input-volume").parent().hide();
+                } else if ($("#node-input-command").val() === "volume") {
+                    $("#node-input-volume").parent().show();
+                    $("#node-input-action").parent().hide();
+                } else  {
+                    $("#node-input-volume").parent().hide();
+                    $("#node-input-action").parent().hide();
+                }
+            });
+		}
+    });
+</script>

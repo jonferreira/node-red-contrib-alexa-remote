@@ -17,7 +17,10 @@
   ],
   "node-red": {
     "nodes": {
-      "alexa": "alexa.js"
+      "alexa": "alexa.js",
+      "alexa-speak": "alexa-speak.js",
+      "alexa-music": "alexa-music.js",
+      "alexa-command": "alexa-command.js"
     }
   },
   "author": "Jónatas Ferreira",
