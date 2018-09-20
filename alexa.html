@@ -2,6 +2,10 @@
 
 <script type="text/x-red" data-template-name="Alexa-credentials">
 	<div class="form-row">
+        <label for="node-config-input-name"><i class="fa fa-user"></i> Name</label>
+        <input type="text" id="node-config-input-name">
+    </div>
+    <div class="form-row">
         <label for="node-config-input-email"><i class="fa fa-user"></i> Email</label>
         <input type="text" id="node-config-input-email">
     </div>
@@ -48,8 +52,12 @@
     RED.nodes.registerType('Alexa-speak',{
         category: 'media',
         color:    '#E9967A',
+        label: function() {
+            return this.name || "Amazon Speak";
+        },
 		paletteLabel: "Amazon Speak",
         defaults: {
+            name: {value:""},
             serialOrName:  { value:"" },
             text:  { value:"" },
             account:  { type:"Alexa-credentials", required:true }

@@ -15,7 +15,12 @@
     "remote",
     "node-red"
   ],
-  "author": "SchattenMann",
+  "node-red": {
+    "nodes": {
+      "alexa": "alexa.js"
+    }
+  },
+  "author": "Jónatas Ferreira",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/jonferreira/node-red-contrib-alexa-remote/issues"

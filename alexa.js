@@ -1,10 +1,10 @@
-(function() {
+//(function() {
 	
 	var debug = true;
 	
   module.exports = function(RED) {
     var AlexaCredentialsNode, AlexaSpeakNode;
-	var Alexa = require('alexa-remote2');
+    var Alexa = require('alexa-remote2');
 
     AlexaCredentialsNode = function(config) {
       
@@ -38,11 +38,12 @@
 	  
       this.account = RED.nodes.getNode(config.account);
 	  
-	  if(debug) {node.warn(this);}
+      if(debug) {node.warn("1");}
+      if(debug) {node.warn(this);}
 	  
-      return this.on('input', (function(_this) {
+       this.on('input', function(msg) {
 		  
-        return function(msg) {
+        //return function(msg) {
 			
 			  var body, req, request;
 			  
@@ -53,8 +54,9 @@
 			  });
 			  
 			
-			var Alexa = new Alexa();
-			
+			var alexa = new Alexa();
+            
+            if(debug) {node.warn("2");}
             if(debug) {node.warn(node);}
             
             alexa.init({
@@ -64,8 +66,8 @@
                 logger: console.log, // optional
                 alexaServiceHost: node.account.alexaServiceHost || 'pitangui.amazon.com', // optional, e.g. "pitangui.amazon.com" for amazon.com, default is "layla.amazon.de"
                 //userAgent: '...', // optional, override used user-Agent for all Requests and Cookie determination
-                acceptLanguage: this.account.acceptLanguage || 'en-UK', // optional, override Accept-Language-Header for cookie determination
-                amazonPage: this.account.amazonPage || 'amazon.com' // optional, override Amazon-Login-Page for cookie determination and referer for requests
+                acceptLanguage: node.account.acceptLanguage || 'en-UK', // optional, override Accept-Language-Header for cookie determination
+                amazonPage: node.account.amazonPage || 'amazon.com' // optional, override Amazon-Login-Page for cookie determination and referer for requests
                 //useWsMqtt: false // optional, true to use the Websocket/MQTT direct push connection
                 },
                 function (err) {
@@ -83,8 +85,12 @@
                         node.send(msg);
 
                     }
+
+                    if(debug) {node.warn("3");}
+                    if(debug) {node.warn(msg.serialOrName || node.serialOrName);}
+                    if(debug) {node.warn(msg.text || node.text);}
                     
-                    this.sendSequenceCommand(msg.serialOrName || node.serialOrName, "speak", msg.text || node.text, function(error, result){
+                    alexa.sendSequenceCommand((msg.serialOrName || node.serialOrName), "speak", (msg.text || node.text), function(error, result){
                         
                         if (err) {
 
@@ -101,6 +107,7 @@
     
                         } else {
 
+                            if(debug) {node.warn("4");}
                             if(debug) {node.warn(result);}
                             
                             node.status({
@@ -110,6 +117,7 @@
                             });
                             
                             msg.payload = result;
+                            msg.error = false;
                             
                             node.send(msg);
 
@@ -118,29 +126,13 @@
                     });
                     
                 }
-            ).catch((err) => {
-				
-				if(debug) {node.warn(err);}
-				
-				node.status({
-				  shape: "dot",
-				  fill: "red",
-				  text : "Error: " + err 
-				});
-				
-				msg.payload = err;
-				msg.error = true;
-				
-				node.send(msg);
-				
-			});;
-		
-        };
-      })(this));
+            )	
+        //};
+      })
 	  
     };
     RED.nodes.registerType("Alexa-credentials", AlexaCredentialsNode);
-    return RED.nodes.registerType("Alexa-speak", AlexaSpeakNode);
+    RED.nodes.registerType("Alexa-speak", AlexaSpeakNode);
   };
 
-}).call(this);
+//}).call(this);
