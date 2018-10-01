@@ -67,15 +67,15 @@ var debug = false;
                     }
 
                     if(debug) {node.warn("3");}
-                    if(debug) {node.warn(msg.serialOrName || node.serialOrName);}
-                    if(debug) {node.warn(msg.text || node.text);}
+                    if(debug) {node.warn(msg.payload.serialOrName || node.serialOrName);}
+                    if(debug) {node.warn(msg.payload.text || node.text);}
 
-                    if(msg.volume || node.volume) {
+                    if(msg.payload.volume || node.volume) {
 
                         if(debug) {node.warn("5");}
-                        if(debug) {node.warn(msg.volume || node.volume);}
+                        if(debug) {node.warn(msg.payload.volume || node.volume);}
 
-                        alexa.sendMessage((msg.serialOrName || node.serialOrName), "volume", (msg.volume || node.volume), function(error, result){
+                        alexa.sendMessage((msg.payload.serialOrName || node.serialOrName), "volume", (msg.payload.volume || node.volume), function(error, result){
                             if (err) {
 
                                 node.status({
@@ -94,7 +94,7 @@ var debug = false;
 
                     }
                     
-                    alexa.sendSequenceCommand((msg.serialOrName || node.serialOrName), "speak", (msg.text || node.text), function(error, result){
+                    alexa.sendSequenceCommand((msg.payload.serialOrName || node.serialOrName), "speak", (msg.payload.text || node.text), function(error, result){
                         
                         if (err) {
 
